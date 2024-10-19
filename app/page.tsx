@@ -1,4 +1,4 @@
-import Image from "next/image";
+//import Image from "next/image";
 
 async function getData(){
   const reqponse = await fetch("https://fisrt-pr.shuttleapp.rs/corses",{
