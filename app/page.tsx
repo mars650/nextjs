@@ -17,7 +17,7 @@ export default async function Home() {
         <h1>Some Text</h1>
         <h1>{posts['url']}</h1>
 <div>
-    {posts.map((post) => {
+    {posts.map((post: any) => {
       return (
         <div key={post.name}>
         <p>{post.name}</p>
