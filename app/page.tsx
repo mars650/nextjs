@@ -17,7 +17,7 @@ export default async function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
         <h1>Some Text</h1>
         <div>
-          {posts.map((post: any) => {
+          {posts.map((post) => {
               return (
                 <div key={post.name}>
                 <p>{post.name}</p>
