@@ -85,8 +85,8 @@ interface researc_list{
     const [check, setChek] = useState(false);
     const handleClick = () => setChek(!check)
   const [isDisabled, setIsDisabled] = useState(false);
-
-    const [tokenstatus, setToken] = useState<Number>();
+  const [tokenstatus, setToken] = useState<Number>();
+  const url = "https://secend-pr.shuttleapp.rs/todos";
   
     // const [check2, setChek2] = useState(false);
     // const handleClick2 = () => setChek2(!check2)
@@ -96,7 +96,7 @@ interface researc_list{
       let auth = localStorage.getItem("Authorization")
       if (auth != null){
     
-      const reqponse = await fetch("http://192.168.0.102:8070/add-status-sheet",{
+      const reqponse = await fetch(`${url}/add-status-sheet`,{
         method: "POST",
         body: JSON.stringify({
           // "type_of_element": Object.keys(params)[0],
@@ -162,7 +162,7 @@ interface researc_list{
     if (auth != null){
       if(confirm("هل انت متأكد من حذف العنصر")){
 // console.log("OK")
-        await fetch(`http://192.168.0.102:8070/deleteSheet`,{
+        await fetch(`${url}/deleteSheet`,{
           // method: "DELETE",
           method: "POST",
           body: JSON.stringify({
@@ -266,7 +266,7 @@ interface researc_list{
       // setIsDisabled(false)
     }
     
-    useEffect(() => {
+    // useEffect(() => {
   
       let auth = localStorage.getItem("Authorization");
     
@@ -274,7 +274,7 @@ interface researc_list{
     toast.error("Error 400");
       if (auth != null){
         toast.error("Error 400");
-          fetch(`http://192.168.0.102:8070/sheetAu/${params.sheet}`,{
+          fetch(`${url}/sheetAu/${params.sheet}`,{
             method: "GET",
           
             headers: {
@@ -305,7 +305,7 @@ const getStatus = async () => {
   // toast.error("Error 400");
     if (auth != null){
       // toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/sheet-get-status`,{
+        fetch(`${url}/sheet-get-status`,{
           method: "POST",
           body: JSON.stringify({
             "courseid": parseInt(params.sheet),
@@ -336,7 +336,7 @@ const getStatus = async () => {
   }
   const fetchDataNormel = async () => {
   // if (auth != null){
-      fetch(`http://192.168.0.102:8070/sheet/${params.sheet}`,{
+      fetch(`${url}/sheet/${params.sheet}`,{
         method: "GET",
       })
         .then((res) => {
@@ -360,7 +360,7 @@ const getStatus = async () => {
   
   if(auth != null){
     const fatching = async () => {
-    const reqponse = await fetch("http://192.168.0.102:8070/user/decode-token",{
+    const reqponse = await fetch(`${url}/user/decode-token`,{
       method: "POST",
       body: JSON.stringify({
         "token": auth
@@ -400,7 +400,7 @@ const getStatus = async () => {
     fetchDataNormel()
   }
           
-  }, []);
+  // }, []);
   const corse_lest: researc_list[] = resqst;
   const get_status: GetStatus[] = status;
   let fLen = get_status.length;

@@ -45,6 +45,7 @@ const Fetch = ( { params }: any ) => {
   const [check, setChek] = useState(false);
   const handleClick = () => setChek(!check)
   const [tokenstatus, setToken] = useState<Number>();
+  const url = "https://secend-pr.shuttleapp.rs/todos";
 
   // const [check2, setChek2] = useState(false);
   // const handleClick2 = () => setChek2(!check2)
@@ -54,7 +55,7 @@ const Fetch = ( { params }: any ) => {
     let auth = localStorage.getItem("Authorization")
     if (auth != null){
   
-    const reqponse = await fetch("http://192.168.0.102:8070/add-event",{
+    const reqponse = await fetch(`${url}/add-event`,{
       method: "POST",
       body: JSON.stringify({
         "type_of_element": Object.keys(params)[0],
@@ -120,7 +121,7 @@ const fetchData = async () => {
   toast.error("Error 400");
     if (auth != null){
       toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/getEvent`,{
+        fetch(`${url}/getEvent`,{
           method: "GET",
         
           headers: {
@@ -145,7 +146,7 @@ const fetchData = async () => {
   
 const fetchDataNormel = async () => {
 // if (auth != null){
-    fetch(`http://192.168.0.102:8070/getEvent`,{
+    fetch(`${url}/getEvent`,{
       method: "GET",
     })
       .then((res) => {
@@ -164,7 +165,7 @@ const fetchDataNormel = async () => {
 
 if(auth != null){
   const fatching = async () => {
-  const reqponse = await fetch("http://192.168.0.102:8070/user/decode-token",{
+  const reqponse = await fetch(`${url}/user/decode-token`,{
     method: "POST",
     body: JSON.stringify({
       "token": auth

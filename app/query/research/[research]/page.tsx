@@ -52,6 +52,7 @@ const Fetch = ( { params }: any ) => {
   const handleClick = () => setChek(!check)
   const [tokenstatus, setToken] = useState<Number>();
   const [isDisabled, setIsDisabled] = useState(false);
+  const url = "https://secend-pr.shuttleapp.rs/todos";
 
   // const [check2, setChek2] = useState(false);
   // const handleClick2 = () => setChek2(!check2)
@@ -61,7 +62,7 @@ const Fetch = ( { params }: any ) => {
     let auth = localStorage.getItem("Authorization")
     if (auth != null){
   
-    const reqponse = await fetch("http://192.168.0.102:8070/add-status-research",{
+    const reqponse = await fetch(`${url}/add-status-research`,{
       method: "POST",
       body: JSON.stringify({
         // "type_of_element": Object.keys(params)[0],
@@ -131,7 +132,7 @@ const Fetch = ( { params }: any ) => {
     if (auth != null){
       if(confirm("هل انت متأكد من حذف العنصر")){
 // console.log("OK")
-        await fetch(`http://192.168.0.102:8070/deleteResearch`,{
+        await fetch(`${url}/deleteResearch`,{
           // method: "DELETE",
           method: "POST",
           body: JSON.stringify({
@@ -235,7 +236,7 @@ const Fetch = ( { params }: any ) => {
       // setIsDisabled(false)
     }
   
-  useEffect(() => {
+  // useEffect(() => {
 
     let auth = localStorage.getItem("Authorization");
   
@@ -243,7 +244,7 @@ const fetchData = async () => {
   toast.error("Error 400");
     if (auth != null){
       toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/researchingAu/${params.research}`,{
+        fetch(`${url}/researchingAu/${params.research}`,{
           method: "GET",
         
           headers: {
@@ -275,7 +276,7 @@ const getStatus = async () => {
   // toast.error("Error 400");
     if (auth != null){
       // toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/research-get-status`,{
+        fetch(`${url}/research-get-status`,{
           method: "POST",
           body: JSON.stringify({
             "courseid": parseInt(params.research),
@@ -309,7 +310,7 @@ const getStatus = async () => {
   
 const fetchDataNormel = async () => {
 // if (auth != null){
-    fetch(`http://192.168.0.102:8070/researching/${params.research}`,{
+    fetch(`${url}/researching/${params.research}`,{
       method: "GET",
     })
       .then((res) => {
@@ -332,7 +333,7 @@ const fetchDataNormel = async () => {
 
 if(auth != null){
   const fatching = async () => {
-  const reqponse = await fetch("http://192.168.0.102:8070/user/decode-token",{
+  const reqponse = await fetch(`${url}/user/decode-token`,{
     method: "POST",
     body: JSON.stringify({
       "token": auth
@@ -370,7 +371,7 @@ if(auth != null){
   fetchDataNormel()
 }
         
-}, []);
+// }, []);
   const corse_lest: researc_list[] = resqst;
   const get_status: GetStatus[] = status;
   let fLen = get_status.length;

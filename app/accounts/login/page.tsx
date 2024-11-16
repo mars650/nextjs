@@ -24,20 +24,23 @@ interface Corse_lest{
     token: string;
     
   }
-
 // export default async function Page() {
 export default  function Page() {
   const [photos, setPhotos] = useState([]);
+  const router = useRouter();
+  const [check2, setChek2] = useState(false);
+
 const inputName = useRef<HTMLInputElement>(null);
 const inputPassword = useRef<HTMLInputElement>(null);
- const router = useRouter();
+const url = "https://secend-pr.shuttleapp.rs/todos";
+ 
 
  useEffect(() => {
   let auth = localStorage.getItem("Authorization")
 
   if(auth != null){
 
-    const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+    const reqponse = fetch(`${url}/user/decode-token`,{
       method: "POST",
       body: JSON.stringify({
       
@@ -60,7 +63,9 @@ const inputPassword = useRef<HTMLInputElement>(null);
       // console.log(data);
       if(data == 200){
         // localStorage.setItem("Authorization",data.token);
-          router.push('/')
+        // funRout();
+        setChek2(true);
+         
   
   
       }
@@ -72,6 +77,10 @@ const inputPassword = useRef<HTMLInputElement>(null);
  
    
 }, [])
+if(check2 == true){
+  router.push('/')
+
+}
 const [errorUsernam, setMessageUser] = useState('');
 const [errorPasswrod, setMessagePass] = useState('');
 
@@ -108,7 +117,7 @@ const [errorPasswrod, setMessagePass] = useState('');
   
           // console.log(inputName.current.value)
           // const password = "admin";
-        const reqponse = await fetch("http://192.168.0.102:8070/user/login",{
+        const reqponse = await fetch(`${url}/user/login`,{
           method: "POST",
           body: JSON.stringify({
             // "id":1,
@@ -162,7 +171,8 @@ const [errorPasswrod, setMessagePass] = useState('');
             // console.log(data.token);
             localStorage.setItem("Authorization",data.token);
             localStorage.setItem("departmentStatus","ture")
-            router.push('/')
+            // router.push('/')
+            // funRout();
             // router.refresh(); 
             // window.location.reload();
   
@@ -265,4 +275,10 @@ const [errorPasswrod, setMessagePass] = useState('');
     
   )
 }
+
+// function funRout() {
+//   const router = useRouter();
+
+//   router.push('/')
+// }
 

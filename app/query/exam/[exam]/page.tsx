@@ -50,6 +50,7 @@ const Fetch = ( { params }: any ) => {
   const handleClick = () => setChek(!check)
   const [tokenstatus, setToken] = useState<Number>();
   const [isDisabled, setIsDisabled] = useState(false);
+  const url = "https://secend-pr.shuttleapp.rs/todos";
 
 
   // const [check2, setChek2] = useState(false);
@@ -60,7 +61,7 @@ const Fetch = ( { params }: any ) => {
     let auth = localStorage.getItem("Authorization")
     if (auth != null){
   
-    const reqponse = await fetch("http://192.168.0.102:8070/add-status-exam",{
+    const reqponse = await fetch(`${url}/add-status-exam`,{
       method: "POST",
       body: JSON.stringify({
         // "type_of_element": Object.keys(params)[0],
@@ -126,7 +127,7 @@ const DeleteData = async (localid: any, arrayid: any) => {
   if (auth != null){
     if(confirm("هل انت متأكد من حذف العنصر")){
 // console.log("OK")
-      await fetch(`http://192.168.0.102:8070/deleteExam`,{
+      await fetch(`${url}/deleteExam`,{
         // method: "DELETE",
         method: "POST",
         body: JSON.stringify({
@@ -230,7 +231,7 @@ const UpdateData = async (localid: any, arrayid: any) => {
     // setIsDisabled(false)
   }
   
-  useEffect(() => {
+  // useEffect(() => {
 
     let auth = localStorage.getItem("Authorization");
   
@@ -238,7 +239,7 @@ const fetchData = async () => {
   toast.error("Error 400");
     if (auth != null){
       toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/examAu/${params.exam}`,{
+        fetch(`${url}/examAu/${params.exam}`,{
           method: "GET",
         
           headers: {
@@ -268,7 +269,7 @@ const getStatus = async () => {
   toast.error("Error 400");
     if (auth != null){
       toast.error("Error 400");
-        fetch(`http://192.168.0.102:8070/exam-get-status`,{
+        fetch(`${url}/exam-get-status`,{
           method: "POST",
           body: JSON.stringify({
             "courseid": parseInt(params.exam),
@@ -299,7 +300,7 @@ const getStatus = async () => {
   }
 const fetchDataNormel = async () => {
 // if (auth != null){
-    fetch(`http://192.168.0.102:8070/exam/${params.exam}`,{
+    fetch(`${url}/exam/${params.exam}`,{
       method: "GET",
     })
       .then((res) => {
@@ -322,7 +323,7 @@ const fetchDataNormel = async () => {
 
 if(auth != null){
   const fatching = async () => {
-  const reqponse = await fetch("http://192.168.0.102:8070/user/decode-token",{
+  const reqponse = await fetch(`${url}/user/decode-token`,{
     method: "POST",
     body: JSON.stringify({
       "token": auth
@@ -362,7 +363,7 @@ if(auth != null){
   fetchDataNormel()
 }
         
-}, []);
+// }, []);
 const corse_lest: researc_list[] = resqst;
 const get_status: GetStatus[] = status;
 let fLen = get_status.length;

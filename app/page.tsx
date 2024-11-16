@@ -49,7 +49,8 @@ const Fetch = () => {
 //   fetch('https://jsonplaceholder.typicode.com/photos')
 const fetchDataAu = async () => {
 if(auth != null){
-await fetch("http://192.168.0.102:8070/corsesAu",{
+// await fetch("http://192.168.0.102:8070/corsesAu",{
+await fetch("https://secend-pr.shuttleapp.rs/todos/corsesAu",{
 
   method: "GET",
   credentials: "same-origin",
@@ -75,7 +76,8 @@ await fetch("http://192.168.0.102:8070/corsesAu",{
   }
 
 const fetchData = async () => {
-await fetch("http://192.168.0.102:8070/corses",{
+// await fetch("http://192.168.0.102:8070/corses",{
+await fetch("https://secend-pr.shuttleapp.rs/todos/corses",{
   method: "GET",
   credentials: "same-origin",
  
@@ -99,7 +101,8 @@ await fetch("http://192.168.0.102:8070/corses",{
 // fetchData();
     if(auth != null){
     const fatching = async () => {
-    const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+    // const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+    const reqponse = fetch("https://secend-pr.shuttleapp.rs/todos/user/decode-token",{
       method: "POST",
       body: JSON.stringify({
         "token": auth

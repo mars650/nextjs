@@ -21,6 +21,7 @@ const [data, setData] = useState([]);
 const [dataUser, setDataUser] = useState([]);
 
 const [isDisabled, setIsDisabled] = useState(false);
+const url = "https://secend-pr.shuttleapp.rs/todos";
 
 
 
@@ -30,7 +31,7 @@ const [isDisabled, setIsDisabled] = useState(false);
   // console.log(auth);
   if(auth != null){
     const fatching = async () => {
-      const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+      const reqponse = fetch(`${url}/user/decode-token`,{
         method: "POST",
         body: JSON.stringify({
           "token": auth
@@ -63,7 +64,7 @@ const [isDisabled, setIsDisabled] = useState(false);
   // console.log(auth);
   if(auth != null){
     const fatching = async () => {
-      const reqponse = fetch("http://192.168.0.102:8070/user/userData",{
+      const reqponse = fetch(`${url}/user/userData`,{
         method: "GET",
   credentials: "same-origin",
   headers: {

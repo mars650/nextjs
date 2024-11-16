@@ -12,6 +12,7 @@ import * as yup from "yup";
 // import { ToastContainer, toast } from 'react-toastify';
 import { Toaster, toast } from 'sonner';
 import 'react-toastify/dist/ReactToastify.css';
+const url = "https://secend-pr.shuttleapp.rs/todos";
 
 // toast.configure();
 const onSubmit = async (values: any, actions: any) => {
@@ -24,7 +25,7 @@ const onSubmit = async (values: any, actions: any) => {
   localStorage.setItem("departmentStatus","false")
 const fetchDataAu = async () => {
 
-  const reqponse = await fetch("http://192.168.0.102:8070/add-research",{
+  const reqponse = await fetch(`${url}/add-research`,{
     method: "POST",
     body: JSON.stringify({
    
@@ -85,7 +86,7 @@ const fetchDataAu = async () => {
 }
 if(auth != null){
   const fatching = async () => {
-  const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+  const reqponse = fetch(`${url}/user/decode-token`,{
     method: "POST",
     body: JSON.stringify({
       "token": auth
@@ -140,7 +141,7 @@ const BasicForm = () => {
   if (typeof window !== 'undefined') {
     let auth = localStorage.getItem("Authorization")
       if (auth == null){
-        fetch("http://192.168.0.102:8070/corses",{
+        fetch(`${url}/corses`,{
           method: "GET",
           credentials: "same-origin",
         })
@@ -155,7 +156,7 @@ const BasicForm = () => {
       }else{
     
         //   fetch('https://jsonplaceholder.typicode.com/photos')
-          fetch("http://192.168.0.102:8070/corses",{
+          fetch(`${url}/corses`,{
             method: "GET",
             credentials: "same-origin",
             headers: {
@@ -179,7 +180,7 @@ const BasicForm = () => {
       }
       if(auth != null){
         const fatching = async () => {
-        const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+        const reqponse = fetch(`${url}/user/decode-token`,{
           method: "POST",
           body: JSON.stringify({
             "token": auth

@@ -19,6 +19,7 @@ interface Corse_lest{
 const Fetch = () => {
   const [photos, setPhotos] = useState([]);
   const [req_states, getStates] = useState<Number>();
+  const url = "https://secend-pr.shuttleapp.rs/todos";
   
 
   useEffect(() => {
@@ -30,7 +31,7 @@ const Fetch = () => {
       }else{
     
         //   fetch('https://jsonplaceholder.typicode.com/photos')
-          fetch("http://192.168.0.102:8070/corses",{
+          fetch(`${url}/corses`,{
             method: "GET",
             credentials: "same-origin",
             headers: {
@@ -103,8 +104,8 @@ const Fetch = () => {
               return (
   // <div className=" backdrop-blur-sm max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
           <div className=" max-w-sm rounded-lg shadow " key={post.name}>
-          <a href="#">
-          {/* <img className="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" /> */}
+          {/* <a href="#">
+          {/* <img className="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" /> *
               
               <img 
                       src={post.url}
@@ -115,7 +116,7 @@ const Fetch = () => {
                       // priority 
                       alt={''} />
 
-          </a>
+          </a> */}
     <div className="p-5 ">
     {/* <div className=" h-full w-full bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100" > */}
 

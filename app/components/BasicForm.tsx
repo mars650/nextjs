@@ -38,52 +38,60 @@ import { useRouter } from 'next/navigation'
 //   // router.push('/react')
   
 // };
+const url = "https://secend-pr.shuttleapp.rs/todos";
 
 const BasicForm = () => {
   const router = useRouter();
   const [check, setChek] = useState(false);
+  const [check2, setChek2] = useState(false);
 
 
- useEffect(() => {
-  let auth = localStorage.getItem("Authorization")
-
-  if(auth != null){
-
-    const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
-      method: "POST",
-      body: JSON.stringify({
+  const fetchData = async () => {
+  
+    let auth = localStorage.getItem("Authorization")
+  
+    if(auth != null){
+  
+      const reqponse = fetch(`${url}/user/decode-token`,{
+        method: "POST",
+        body: JSON.stringify({
+        
+          "token": auth
+         
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8"
+        }
       
-        "token": auth
        
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8"
-      }
+      })  .then((res) => {
+        // localStorage.setItem("state", res.status.toString());
     
-     
-    })  .then((res) => {
-      // localStorage.setItem("state", res.status.toString());
+        // console.log("request status ")
+        // console.log(res.status)
+        return res.json();
+      })
+      .then((data) => {
+        // console.log(data);
+        if(data == 200){
+          // localStorage.setItem("Authorization",data.token);
+            setChek2(true);
+    
+    
+        }
+        return data
+       
+      });
+    }
   
-      // console.log("request status ")
-      // console.log(res.status)
-      return res.json();
-    })
-    .then((data) => {
-      // console.log(data);
-      if(data == 200){
-        // localStorage.setItem("Authorization",data.token);
-          router.push('/')
-  
-  
-      }
-      return data
-     
-    });
   }
-
- 
-   
+ useEffect(() => {
+  fetchData()
 }, [])
+if(check2 == true){
+  router.push('/')
+
+}
   
   const onSubmit = async (values: any, actions: any) => {
     setChek(false);
@@ -103,7 +111,7 @@ const BasicForm = () => {
   
     
     
-    const reqponse = await fetch("http://192.168.0.102:8070/user/sign-up",{
+    const reqponse = await fetch(`${url}/user/sign-up`,{
       method: "POST",
       body: JSON.stringify({
         // body.user_name.clone(),
