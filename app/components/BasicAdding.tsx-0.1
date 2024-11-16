@@ -1,0 +1,189 @@
+// "use client";
+import { useFormik } from "formik";
+import { addingSchema, basicSchema } from "../schemas/page";
+import Link from "next/link";
+// import { useRouter } from 'next/router'
+
+
+const onSubmit = async (values: any, actions: any) => {
+  alert("sumbint")
+  console.log("submit");
+  console.log(values);
+ 
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  actions.resetForm();
+
+  
+};
+
+const BasicForm = () => {
+  // const router = useRouter()
+
+  const { values, handleBlur,errors,touched,isSubmitting, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      corses: "",
+      // resarch: "",
+      // quize: "",
+      dateStart: "",
+      dateEnd: "",
+      maxNumber: "",
+      minNumber: "",
+      comment: "",
+    },
+    // validationSchema: addingSchema,
+   
+    onSubmit,
+    
+  });
+    return (
+      
+      <form onSubmit={handleSubmit} autoComplete="off" className="h-50 content-center">
+        <label htmlFor="Corses">Corses</label>
+        <select id="corses" name="corses" 
+        value={values.corses.toString()}
+        onChange={handleChange}>
+          <option value="volvo">Volvo</option>
+          <option value="saab">Saab</option>
+          <option value="fiat">Fiat</option>
+          <option value="audi">Audi</option>
+        </select>
+        {errors.corses && touched.corses && <p className="error">{errors.corses}</p>}
+
+        <label htmlFor="Chomes">Chomes</label>
+        <div className="flex ">
+          <div className="flex justify-center items-center ps-4 border w-screen border-gray-200 me-2 juarfay- rounded dark:border-gray-700">
+            <input id="bordered-radio-1" type="radio"  
+            name="bordered-radio" 
+            
+            value={"resarch"}
+            onChange={handleChange}
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            
+            />
+            <label htmlFor="bordered-radio-1" className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Default radio</label>
+          </div>
+          <div className="flex justify-center items-center ps-4 border me-2 w-screen border-gray-200 rounded dark:border-gray-700">
+            <input checked id="bordered-radio-2" type="radio" 
+            name="bordered-radio" 
+            value={"quize"}
+            onChange={handleChange}
+            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+            
+            />
+            <label htmlFor="bordered-radio-2" className="w-full py-4 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Checked state</label>
+        </div>
+       </div>
+
+
+
+        {/* <label htmlFor="date">date</label>
+        <div id="date-range-picker" date-rangepicker className="flex items-center mt-1">
+          <div className="relative">
+            <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+            </div>
+            <input id="dateStart" name="dateStart" type="text" 
+            value={values.dateStart}
+            onChange={handleChange}
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+            placeholder="Select date start" />
+          </div>
+
+        <span className="mx-4 text-gray-500">to</span>
+
+        <div className="relative">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+              <svg className="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+              </svg>
+          </div>
+          <input id="dateEnd" name="dateEnd" type="text" 
+          value={values.dateEnd}
+          onChange={handleChange}
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+          placeholder="Select date end" />
+      </div>
+      </div> */}
+
+        {/* <label htmlFor="date">date</label> */}
+        <div id="date-range-picker" date-rangepicker className="flex items-center mt-1">
+          <div className="relative">
+            
+            <label htmlFor="dateStart">dateStart</label>
+        <input 
+        value={values.dateStart}
+        onChange={handleChange}
+        id="dateStart" type="date" placeholder="Enter your dateStart" 
+        className={errors.dateStart && touched.dateStart ? "input-error" : "text-sm w-screen" }
+        />
+        {errors.dateStart && touched.dateStart && <p className="error">{errors.dateStart}</p>}
+          </div>
+
+        <span className="mx-4 text-gray-500 mt-9">to</span>
+
+        <div className="relative">
+         
+          <label htmlFor="dateEnd">dateEnd</label>
+        <input 
+        value={values.dateEnd}
+        onChange={handleChange}
+        id="dateEnd" type="date" placeholder="Enter your dateEnd" 
+        className={errors.dateEnd && touched.dateEnd ? "input-error" : "text-sm w-screen"}
+        />
+        {errors.dateEnd && touched.dateEnd && <p className="error">{errors.dateEnd}</p>}
+      </div>
+      </div>
+
+        
+        <div id="date-range-picker" date-rangepicker className="flex items-center">
+          <div className="relative">
+          <label htmlFor="minNumber">minNumber</label>
+        <input 
+        value={values.minNumber}
+        onChange={handleChange}
+        id="minNumber" type="number" placeholder="Enter your Min" 
+        className={errors.minNumber && touched.minNumber ? "input-error" : ""}
+        
+        />
+        {errors.minNumber && touched.minNumber && <p className="error">{errors.minNumber}</p>}
+          </div>
+
+        <span className="mx-4 text-gray-500  mt-9">to</span>
+
+        <div className="relative">
+          
+       
+        <label htmlFor="maxNumber">maxNumber</label>
+        <input 
+        value={values.maxNumber}
+        onChange={handleChange}
+        id="maxNumber" type="number" placeholder="Enter your Max" 
+        className={errors.maxNumber && touched.maxNumber ? "input-error" : ""}
+        
+        />
+        {errors.maxNumber && touched.maxNumber && <p className="error">{errors.maxNumber}</p>}
+      </div>
+      </div>
+
+        
+
+        
+
+        <label htmlFor="comment">comment</label>
+        <input 
+        value={values.comment}
+        onChange={handleChange}
+        id="comment" type="string" placeholder="Enter your comment" 
+        className={errors.comment && touched.comment ? "input-error" : ""}
+        
+        />
+        {errors.comment && touched.comment && <p className="error">{errors.comment}</p>}
+
+
+        <button disabled={isSubmitting} type="submit" >Submit</button>
+      </form>
+    );
+  };
+  export default BasicForm;

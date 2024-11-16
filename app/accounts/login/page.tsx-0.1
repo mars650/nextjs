@@ -1,0 +1,271 @@
+"use client";
+
+import { KeyboardEvent, useState , useEffect, useRef} from "react";
+
+
+// import Form from '../next/form'
+// async function getData(){
+// function getData(){
+// console.log(inputElem.current.value);
+   
+  // let name = window.document.getElementById("inputV").value;
+  // let email = window.document.getElementById("inputV2").value;
+  // const [photos, setPhotos] = useState([]);
+
+  // const validate = (event: { preventDefault: () => void; }) => {
+  //   if(/\*/.test(name)) {
+  //     event.preventDefault();
+  //     // setAlert(true);
+  //     // return;
+  //     console.log(name);
+  //   }
+  // }
+    // const password = "admin";
+  // const reqponse = await fetch("http://192.168.0.102:8070/user/encode-token",{
+    // useEffect(() => { 
+
+   
+//   const reqponse =  await fetch("http://192.168.0.102:8070/user/login",{
+//     method: "POST",
+//     body: JSON.stringify({
+//       // "id":1,
+//       "name": inputElem.current.value,
+//       "password": password,
+//       // "email": email,
+//       // "exp": 1
+//     }),
+//     headers: {
+//       "Content-type": "application/json; charset=UTF-8"
+//     }
+  
+   
+//   })  .then((res) => {
+//     // localStorage.setItem("state", res.status.toString());
+
+//     // console.log("request status ")
+//     // console.log(res.status)
+//     return res.json();
+//   })
+//   .then((data) => {
+//     console.log(data);
+//     localStorage.setItem("Authorization",data.token);
+//     return data
+//     // setPhotos(data);
+//   });
+// // }, []);
+//   let token_response = await reqponse.json();
+//   // let token_response =  photos;
+//   console.log(token_response.token)
+//   console.log(token_response)
+//   // localStorage.setItem("lastname", token_response.token);
+//   return token_response;
+// }
+// async function PostRe(){
+//   let name = window.document.getElementById("inputV").value;
+//   let email = window.document.getElementById("inputV2").value;
+//   const password = "admin";
+//   // console.log(document.getElementById("inputV").value);
+//     const xhr = new XMLHttpRequest();
+//     // await xhr.open("post", "http://192.168.0.102:8070/user/encode-token",true);
+//     await xhr.open("post", "http://192.168.0.102:8070/user/login",true);
+//     // await xhr.open("post", "http://192.168.0.102:8070/posttest",true);
+//     xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+//     const body = JSON.stringify({
+//         // "id":1,
+//         "name": name.toString(),
+//         "password": password.toString(),
+//         // "exp": 1
+//     });
+//     xhr.onload = () => {
+//       if (xhr.readyState == 4 && xhr.status == 200) {
+//         //console.log(JSON.parse(xhr.responseText));
+//         console.log(xhr.responseText);
+//       } else {
+//         console.log(`Error: ${xhr.status}`);
+//       }
+//     };
+//     xhr.send(body);
+//   }
+
+interface Corse_lest{
+    massage: string
+    token: string;
+    
+  }
+
+// export default async function Page() {
+export default  function Page() {
+  const [photos, setPhotos] = useState([]);
+const inputName = useRef<HTMLInputElement>(null);
+const inputPassword = useRef<HTMLInputElement>(null);
+
+  
+
+  //  useEffect(() => { 
+  //   const validate = (event: { preventDefault: () => void; }) => {
+  //     if(/\*/.test(name)) {
+  //       event.preventDefault();
+  //       // setAlert(true);
+  //       // return;
+  //       console.log(name);
+  //     }
+  //   }
+  //   // const reqponse = await fetch("http://192.168.0.102:8070/user/encode-token",{
+    //     // useEffect(() => { 
+      
+    const setData = () =>{
+      if(inputName.current == undefined || inputPassword.current == undefined){
+        
+      }else{
+        if(inputName.current.value == "" || inputPassword.current.value == " "){
+          alert("You have add som data. ")
+        }else{
+          
+          console.log(inputName.current.value)
+          console.log(inputName.current)
+  
+          // console.log(inputName.current.value)
+          // const password = "admin";
+        const reqponse = fetch("http://192.168.0.102:8070/user/login",{
+          method: "POST",
+          body: JSON.stringify({
+            // "id":1,
+            "name": inputName.current.value,
+            "password": inputPassword.current.value,
+            // "email": email,
+            // "exp": 1
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        
+         
+        })  .then((res) => {
+          // localStorage.setItem("state", res.status.toString());
+      
+          // console.log("request status ")
+          // console.log(res.status)
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if(data.token != undefined){
+            localStorage.setItem("Authorization",data.token);
+  
+          }
+          return data
+          // setPhotos(data);
+        });
+        }
+     };
+        }
+  
+
+
+
+  // const [name, setName] = useState('');
+  //  const [name2, setName2] = useState('');
+    
+    //    const corse_lest: Corse_lest[] = await res.json();
+    //    window.localStorage.setItem("Authentication", corse_lest.map.token);
+    //    localStorage.setItem("favoriteNumber", corse_lest.token)
+      //  const saveToLocalStorage = (e: { preventDefault: () => void; }) => {
+      //   e.preventDefault()
+      //   localStorage.setItem("favoriteNumber", "corse_lest.token")
+      // }
+      // saveToLocalStorage;
+  return (
+    <div>
+       {/* <form>
+          <label htmlFor="inp" className="inp">
+          <input type="password" id="inp" placeholder="Password" pattern=".{6,}" required/>
+          <svg width="280px" height="18px" viewBox="0 0 280 18" className="border">
+            <path d="M0,12 L223.166144,12 C217.241379,12 217.899687,12 225.141066,12 C236.003135,12 241.9279,12 249.827586,12 C257.727273,12 264.639498,12 274.514107,12 C281.097179,12 281.755486,12 276.489028,12"></path>
+          </svg>
+          <svg width="14px" height="12px" viewBox="0 0 14 12" className="check">
+            <path d="M1 7 5.5 11 L13 1"></path>
+          </svg>
+          </label>
+        </form> */}
+        {/* <form onSubmit={saveToLocalStorage}> */}
+        {/* <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] text-slate-100 text-sm"> */}
+          {/* <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start"> */}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+
+            <div className="flex justify-center items-center h-screen bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-black">
+              <div className="w-96 p-6 shadow-lg bg-white rounded-md">
+                <h1 className="text-3xl block text-center font-semibold font-serif"><i className="fa-solid fa-user"></i>  Login</h1>
+                <hr className="mt-3"/>
+                <div className="mt-3">
+                  <label htmlFor="username" className="block text-base mb-2">Username</label>
+                  <input type="text" id="username" className="border w-full text-base px-2 py-1 focuse:outline-none focuse:ring-0 focuse:border-gray-600" placeholder="Enter Username..." />
+                </div>
+                <div className="mt-3">
+                  <label htmlFor="password" className="block text-base mb-2">Password</label>
+                  <input type="password" id="password" className="border w-full text-base px-2 py-1 focuse:outline-none focuse:ring-0 focuse:border-gray-600" placeholder="Enter Password..." />
+                </div>
+                <div className="mt-3 flex justify-between items-center">
+                  <div>
+                    <input type="checkbox" />
+                    <label> Remember me</label>
+                  </div>
+                  <div>
+                    <a href="" className="text-indigo-800 font-semibold">Forgot password</a>
+                  </div>
+                </div>
+                <div className="mt-5">
+                  <button type="submit" className="border-2 border-indigo-700 bg-indigo-700 text-white py-1 w-full rounded-md hover:bg-transparent hover:text-indigo-700 font-semibold">Login</button>
+                </div>
+                
+              </div>
+            </div>
+
+
+        {/* <div className="back"> */}
+
+        {/* <form action="http://192.168.0.102:8070/user/decode-token2" className="margin: 20px; fong-size: 2rem"> */}
+        {/* <form className="margin: 20px; fong-size: 2rem">
+        {/* <div className="contener_form"> }
+          <div className="form__group field">
+              <input
+              type="input"
+              autoComplete="off"
+              className="form__field" 
+              placeholder="Name" 
+              name="name" 
+              id='inputV' 
+              // required 
+              // onChange={event => setName(event.target.value) }
+              ref={inputName}
+              />
+              <label htmlFor="name" className="form__label">Name</label></div>
+              <div className="form__group field">
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              <label htmlFor="name2" className="form__label">password</label>
+             
+              {/* <input type="submit" value='submit' /> }
+          </div>
+        </form>
+        <button className="button" onClick={setData}>Button</button>
+        </div> */}
+        {/* <button onClick={PostRe}>Button</button> */}
+        {/* <th value={column} onClick={() => this.handleSort(column)}>{column}</th> */}
+        {/* <button value={name} onClick={() => getData(name)}>Button</button> */}
+        {/* <button onClick={PostRe}>Button</button> */}
+
+       
+        {/* </main> */}
+        {/* </div> */}
+    </div>
+    
+  )
+}
+

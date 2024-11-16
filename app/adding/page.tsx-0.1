@@ -1,0 +1,204 @@
+"use client";
+
+import { KeyboardEvent, useState , useEffect, useRef} from "react";
+import { useFormik } from "formik";
+import { basicSchema, loginSchema } from "../schemas/page";
+
+
+interface Corse_lest{
+    massage: string
+    token: string;
+    
+  }
+  const onSubmit = async (values: any, actions: any) => {
+  
+    // alert("sumbint");
+    // alert(values);
+  
+    // console.log("submin");
+    // console.log(values);
+    // console.log(actions);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    actions.resetForm();
+    // router.push('/react')
+    
+  };
+// export default async function Page() {
+export default  function Page() {
+
+  const { values, handleBlur,errors,touched,isSubmitting, handleChange, handleSubmit } = useFormik({
+    initialValues: {
+      name: "",
+      password: "",
+    
+    },
+    validationSchema: loginSchema,
+   
+    onSubmit,
+    
+  });
+  const [photos, setPhotos] = useState([]);
+const inputName = useRef<HTMLInputElement>(null);
+const inputPassword = useRef<HTMLInputElement>(null);
+
+    const setData = () =>{
+      if(inputName.current == undefined || inputPassword.current == undefined){
+        
+      }else{
+        if(inputName.current.value == "" || inputPassword.current.value == " "){
+          alert("You have add som data. ")
+        }else{
+          
+          console.log(inputName.current.value)
+          console.log(inputName.current)
+  
+          // console.log(inputName.current.value)
+          // const password = "admin";
+        const reqponse = fetch("http://192.168.0.102:8070/user/login",{
+          method: "POST",
+          body: JSON.stringify({
+            // "id":1,
+            "name": inputName.current.value,
+            "password": inputPassword.current.value,
+            // "email": email,
+            // "exp": 1
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8"
+          }
+        
+         
+        })  .then((res) => {
+          // localStorage.setItem("state", res.status.toString());
+      
+          // console.log("request status ")
+          // console.log(res.status)
+          return res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          if(data.token != undefined){
+            localStorage.setItem("Authorization",data.token);
+  
+          }
+          return data
+          // setPhotos(data);
+        });
+        }
+     };
+        }
+  
+
+  return (
+    <div>
+      
+        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] text-slate-100 text-sm">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+        <div className="back">
+
+        <form action="http://192.168.0.102:8070/user/decode-token2" className="margin: 20px; fong-size: 2rem">
+        {/* <div className="contener_form"> */}
+          <div className="form__group field">
+              <input
+              type="input"
+              autoComplete="off"
+              className="form__field" 
+              placeholder="Name" 
+              name="name" 
+              id='inputV' 
+              // required 
+              // onChange={event => setName(event.target.value) }
+              ref={inputName}
+              />
+              <label htmlFor="name" className="">اسم المادة </label>
+              </div>
+              <div className="form__group field">
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              </div>
+
+              <label htmlFor="cars">Choose a car:</label>
+            <select id="cars" name="cars">
+                <option value="volvo">Volvo</option>
+                <option value="saab">Saab</option>
+                <option value="fiat">Fiat</option>
+                <option value="audi">Audi</option>
+            </select>
+              <label htmlFor="name2" className="">النوع</label>
+              <input 
+              type="input"
+              className="" 
+              placeholder="Name" 
+              name="" 
+              id='' 
+              ref={inputPassword}
+              required 
+              />
+              {/* <label htmlFor="name2" className="form__label">تاريخ التحديد</label> */}
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              {/* <label htmlFor="name2" className="form__label">تاريخ التسليم</label> */}
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              <label htmlFor="name2" className="form__label">عدد الاعضاء</label>
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              <label htmlFor="name2" className="form__label">عدد الاعضاء2</label>
+              <input 
+              type="input"
+              className="form__field" 
+              placeholder="Name" 
+              name="name2" 
+              id='inputV2' 
+              ref={inputPassword}
+              required 
+              />
+              {/* <label htmlFor="name2" className="form__label">تعليق</label> */}
+             
+              {/* <input type="submit" value='submit' /> */}
+          {/* </div> */}
+          {/* </div> */}
+        </form>
+        <button className="button" onClick={setData}>Button</button>
+        </div>
+        {/* <button onClick={PostRe}>Button</button> */}
+        {/* <th value={column} onClick={() => this.handleSort(column)}>{column}</th> */}
+        {/* <button value={name} onClick={() => getData(name)}>Button</button> */}
+        {/* <button onClick={PostRe}>Button</button> */}
+
+       
+        </main>
+        </div>
+    </div>
+    
+  )
+}
+

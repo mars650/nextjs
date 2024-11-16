@@ -1,0 +1,39 @@
+"use client";
+
+import CustomSelect from "@/app/components/Customs/customSelect_r";
+import { Form, Formik } from "formik";
+import Link from "next/link";
+import React from "react";
+import { useState, useEffect } from 'react';
+import { toast, Toaster } from "sonner";
+import * as yup from "yup";
+import AliceCarousel from 'react-alice-carousel';
+import 'react-alice-carousel/lib/alice-carousel.css';
+const handleDragStart = (e) => e.preventDefault();
+const Fetch = () => {
+    
+    const responsive = {
+        0: {items: 1},
+        1024: {
+            items: 3,
+            itemsFit: 'contain',
+        }
+      }
+const items = [
+	<img src="/image.png" onDragStart={handleDragStart} role="presentation" />,
+	<img src="/logo.jpg" onDragStart={handleDragStart} role="presentation" />,
+	<img src="path-to-img" onDragStart={handleDragStart} role="presentation" />,
+];
+    return (
+        <AliceCarousel mouseTracking>
+      <Link href="#">
+        <img src="/image.png" />
+      </Link>
+      <Link href="#">
+        <img src="logo.jpg" />
+      </Link>
+    </AliceCarousel>
+    );
+}
+  export default Fetch;
+

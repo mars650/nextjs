@@ -1,0 +1,582 @@
+"use client";
+
+import Link from 'next/link';
+import { useState, useEffect, Suspense } from 'react';
+import React from "react";
+import Image from "next/image";
+import useSWR from 'swr'
+// import Loading from './loading';
+// import { SpeakerWaveIcon, SpeakerXMarkIcon } from "outline";
+
+
+// import useSWR from 'swr';
+// interface Count_lest{
+//   corse_id: number
+//   research_count: string;
+// }
+interface Corse_lest{
+  corse_id: number
+  name: string;
+  department: string;
+  url: string;
+  count: number;
+  count_r: number,
+  count_q: number,
+  count_s: number,
+  count_e: number,
+}
+
+const Fetch = () => {
+  const [corses, setCorses] = useState([]);
+  const [error, setError] = useState();
+  const [time_, setTime] = useState("");
+  const [depart, setDepart] = useState("");
+  const [departStatus, setDepartStatus] = useState("");
+  // const [tokenStatus, setTokenStatus] = useState("");
+  const [req_states, getStates] = useState<Number>();
+  
+  useEffect(() => {
+    // localStorage.setItem("department","2");
+
+ let auth = localStorage.getItem("Authorization")
+ let department = localStorage.getItem("department")
+ let departmentStatus = localStorage.getItem("departmentStatus")
+//  localStorage.setItem("departmentStatus","")
+ if(departmentStatus == null){
+  localStorage.setItem("departmentStatus","false")
+ }else{
+  setDepartStatus(departmentStatus);
+ }
+ if(department != null){
+  setDepart(department);
+ }
+    
+  if (typeof window !== 'undefined') {
+//   fetch('https://jsonplaceholder.typicode.com/photos')
+const fetchDataAu = async () => {
+if(auth != null){
+await fetch("http://192.168.0.102:8070/corsesAu",{
+
+  method: "GET",
+  credentials: "same-origin",
+  headers: {
+    'Content-type': 'application/json',
+    'Authorization': auth
+  },
+}).then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
+    }
+    // localStorage.setItem("state", res.status.toString());
+
+    // console.log("request status ")
+    // console.log(res.status)
+  getStates(res.status);
+    return res.json();
+  })
+  .then((data) => {
+    // console.log(data);
+    setCorses(data);
+    // setLoding(data);
+  }).catch((error) => {
+  setError(error);
+
+    console.log(error)
+  });
+}
+  }
+
+const fetchData = async () => {
+await fetch("http://192.168.0.102:8070/corses",{
+  method: "GET",
+  credentials: "same-origin",
+ 
+}).then((res) => {
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`)
+    }
+  getStates(res.status);
+    return res.json();
+  })
+  .then((data) => {
+    // console.log(data);
+    setCorses(data);
+    // setLoding(data);
+  }).catch((error) => {
+  setError(error);
+
+    console.log(error)
+  });
+}
+// fetchData();
+    if(auth != null){
+    const fatching = async () => {
+    const reqponse = fetch("http://192.168.0.102:8070/user/decode-token",{
+      method: "POST",
+      body: JSON.stringify({
+        "token": auth
+      }),
+      headers: {
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })  .then((res) => {
+      return res.json();
+    })
+    .then((data) => {
+      // console.log(data);
+      // setTokenStatus(data);
+      return data
+    }).catch((error) => {
+      console.log(error)
+    });
+    let ts = await reqponse;
+    if(ts == "200"){
+      fetchDataAu()
+    }else{
+      fetchData()
+    }
+    }
+    fatching();
+  }else{
+    
+    fetchData()
+    }
+      }   
+  }, []);
+
+  const corse_lest: Corse_lest[] =  corses;
+
+  var countDownDate = new Date("Jan 5, 2030 15:37:25").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  let taw = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+  setTime(taw);
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+   setTime("EXPIRED");
+  }
+}, 1000);
+
+    if( req_states == 401){
+      return (
+        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+          <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+              <h1>Error 401</h1>
+            </main>
+            </div>
+      );
+    } else if (req_states == 404){
+      return (
+        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+          <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+              <h1>Error 404</h1>
+            </main>
+            </div>
+      );
+  
+    }else{
+  
+    const isNull = !corse_lest.filter(Boolean).length
+  
+    if (isNull){
+      if(error){
+        return(
+          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] text-slate-100 text-base">
+            <main className=" flex flex-col gap-8 row-start-2 items-center sm:items-start">
+           <h1 >server error</h1>
+           {/* <h1 >{error}</h1> */}
+             </main>
+          </div>
+        )
+      }else{
+        return(
+          <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] text-slate-100 text-base">
+            <main className=" flex flex-col gap-8 row-start-2 items-center sm:items-start">
+           <h1>تحميل...</h1>
+             </main>
+          </div>
+        )
+  
+      }
+    }else{
+      let t ;
+      if(departStatus == "false"){
+        t  = false;
+      }else if(departStatus == "true"){
+        t  = true;
+      }
+    return (
+  <div>
+  {t ? "": 
+  // <div className=' h-full w-full fixed left-[0] top-[0]  overflow-x-hidden [transition:0.5s] bg-[rgb(0,212,255)] bg-[radial-gradient(circle,_rgba(0,212,255,1)_0%,_rgba(9,9,121,1)_54%,_rgba(9,10,10,1)_100%)]'>
+  <div className='overflow-hidden h-full w-full fixed left-[0] top-[0]  overflow-x-hidden [transition:0.5s] bg-[linear-gradient(45deg,_#7da8c5,_#5d7b90,_#3f515e,_#222a30,_#000000)]'>
+    
+    {/* <div className='relative h-15 flex flex-col items-center'> */}
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen   gap-16  font-[family-name:var(--font-geist-sans)]">
+          <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+             
+    {/* <div className='m-0 absolute top-2/4 left-2/4 -translate-x-1/2 -translate-y-1/2 w-64 h-20'> */}
+    {/* <button className='flex items-center  items-center bg-[linear-gradient(90deg,_rgba(2,0,36,1)_0%,_rgba(9,9,121,1)_35%,_rgba(0,212,255,1)_100%)] shadow-[#50d71e] border-[0] rounded-[8px] [box-shadow:rgba(151,_65,_252,_0.2)_0_15px_30px_-5px] box-border text-[#FFFFFF] flex font-[Phantomsans,_sans-serif] text-[20px] justify-center leading-[1em] max-w-full min-w-[140px] px-[24px] py-[19px] no-underline select-none whitespace-nowrap cursor-pointer hover:outline-[0] md:text-[24px] md:min-w-[196px] w-full mx-5 my-4' onClick={() => {localStorage.setItem("department","1");localStorage.setItem("departmentStatus","true");window.location.reload() }}>قسم ارشاد فندقي</button> */}
+    <button className='shadow-[#000000] rounded-[8px] shadow-lg box-border text-[#FFFFFF] flex font-[Phantomsans,_sans-serif] text-[20px] justify-center leading-[1em] max-w-full min-w-[140px] px-[24px] py-[19px] no-underline select-none whitespace-nowrap cursor-pointer hover:outline-[0] md:text-[24px] md:min-w-[196px] w-full mx-5 my-4' onClick={() => {localStorage.setItem("department","1");localStorage.setItem("departmentStatus","true");window.location.reload() }}>قسم ارشاد فندقي</button>
+    <button className='rounded-[8px] shadow-lg  shadow-[#000000] box-border text-[#FFFFFF] flex font-[Phantomsans,_sans-serif] text-[20px] justify-center leading-[1em] max-w-full min-w-[140px] px-[24px] py-[19px] no-underline select-none whitespace-nowrap cursor-pointer hover:outline-[0] md:text-[24px] md:min-w-[196px] w-full mx-5 my-4' onClick={() => {localStorage.setItem("department","2");localStorage.setItem("departmentStatus","true");window.location.reload() }}>قسم دراسات فندقية</button>
+    <button className='rounded-[8px] shadow-lg shadow-[#000000] box-border text-[#FFFFFF] flex font-[Phantomsans,_sans-serif] text-[20px] justify-center leading-[1em] max-w-full min-w-[140px] px-[24px] py-[19px] no-underline select-none whitespace-nowrap cursor-pointer hover:outline-[0] md:text-[24px] md:min-w-[196px] w-full mx-5 my-4' onClick={() => {localStorage.setItem("department","3");localStorage.setItem("departmentStatus","true");window.location.reload() }}>قسم دراسات سياحية</button>
+      {/* </div> */}
+            </main>
+            </div>
+    {/* <button className='flex items-center  hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full mx-5 my-4' onClick={() => {localStorage.setItem("department","3");localStorage.setItem("departmentStatus","true");window.location.reload() }}>قسم دراسات سياحية</button> */}
+  </div> 
+  }
+  {/* <div className='w-full h-screen bg-black'>        
+  <div className="slideshow-container">
+  <div className="mySlides fade">
+    <div className="numbertext">1 / 3</div>
+    <Image src="/img1.jpg" width={500} height={500} alt={''}/>
+    <div className="text">Caption Text</div>
+  </div>
+
+  <div className="mySlides fade">
+    <div className="numbertext">2 / 3</div>
+    <img src="/img2.jpg" className="w-full" alt={''}/>
+    <div className="text">Caption Two</div>
+  </div>
+
+  <div className="mySlides fade">
+    <div className="numbertext">3 / 3</div>
+    <img src="/img3.jpg" className="width:100%" alt={''}/>
+    <div className="text">Caption Three</div>
+  </div>
+        
+  
+    <a className="prev" >&#10094;</a>
+    <a className="next" >&#10095;</a>
+  </div>
+</div>  */}
+      <div className="grid grid-rows-[20px_1fr_20px] bg-[rgb(26,_28,_30)] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)] text-slate-100 text-sm">
+       
+        <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start" >
+        {/* <Suspense fallback={<Loading />} > */}
+          <h1 className='text-center element m-auto'>{time_}</h1>
+          
+        
+        {/* <h1>Date: {date.toDateString()}</h1> */}
+          <div>
+{/*   
+        {photos.map((photo) => (
+          <img key={photo.id} src={photo.url} alt={photo.title} width={100} />
+        ))} */}
+              {corse_lest
+              .filter(
+            
+            (d) => {if(depart == "2"){ 
+              // console.log(depart);
+              // return new Date(d.research_deliveryDate).valueOf() - new Date().valueOf() > 0}
+              return d.department == "2" 
+            }else if(depart == "1"){
+              return d.department == "1" 
+
+            }else if(depart == "3"){
+              
+              return d.department == "3" 
+            }
+              // return new Date(d.department).valueOf() - new Date().valueOf() > 0}
+          else{
+            // console.log(depart);
+            return d
+          }
+           
+          }
+           
+          )
+           .map((post) => {
+              return (
+  // <div className=" backdrop-blur-sm max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+          <div className=" max-w-sm rounded-lg shadow " key={post.corse_id}>
+          <a href="#">
+          {/* <img className="rounded-t-lg" src="/docs/images/blog/image-1.jpg" alt="" /> */}
+              
+              <img 
+              src={post.url}
+              
+              className="rounded-t-lg"
+              // width={100}
+              // height={24}
+              // priority 
+              alt={''} />
+          </a>
+    <div className="p-5 ">
+    {/* <div className=" h-full w-full bg-blue-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-10 border border-gray-100" > */}
+
+        <a href="#">
+            {/* <h5>Noteworthy technology acquisitions 2021</h5> justify-items-center flex-1 w-64  inline-flex items-center*/}
+            <h2  className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{post.name}</h2>
+        </a>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+        <div className='flex flex-col flex-wrap'>
+        {/* <button className="inline-flex items-center mb-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  */}
+          <a href={`/query/research/${post.corse_id}`} className="inline-flex items-center mb-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+           الابحاث    {post.count_r}</a> 
+          {/* </button> */}
+        {/* <button > */}
+           <a href={`/query/sheet/${post.corse_id}`} className="inline-flex items-center mb-3 flex-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" 
+           > الشيتات {post.count_s}</a>
+        {/* </button> */}
+        {/* <button className="inline-flex mb-3  items-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  */}
+          <a href={`/query/exam/${post.corse_id}`} className="inline-flex items-center mb-3 flex-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" >
+          التكاليف {post.count_e}
+        </a>
+
+        {/* </button> */}
+        {/* <button className="inline-flex mb-3  items-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">  */}
+        
+        {/* <Link href={`/query/quiz/${post.corse_id}`} className="inline-flex items-center mb-3 flex-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> */}
+        <a href={`/query/quiz/${post.corse_id}`} className="inline-flex items-center mb-3 flex-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        quizes {post.count_q}
+        </a>
+
+        {/* </button> */}
+        </div>
+        {/* <div className='flex flex-col flex-wrap'>
+        <button className="inline-flex items-center mb-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> <Link href={`/research/${post.corse_id}`} className="linck" >
+        
+        الابحاث <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </Link></button>
+        <button className="inline-flex items-center mb-3 flex-1 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> <Link href={`/research/${post.corse_id}`} className="linck" >
+        
+        الشيتات <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </Link></button>
+        <button className="inline-flex mb-3  items-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> <Link href={`/research/${post.corse_id}`} className="linck" >
+        
+        التكاليف <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </Link></button>
+        <button className="inline-flex mb-3  items-center  px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"> <Link href={`/research/${post.corse_id}`} className="linck" >
+        
+        quizes <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+          <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+          </svg>
+        </Link></button>
+        </div> */}
+        {/* <a href="#" className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            Read more
+             <svg className="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+            </svg>
+        </a> */}
+    </div>
+</div>
+    )
+  })}
+
+      </div>
+      {/* </Suspense> */}
+      </main>
+      </div>
+      </div>
+    );
+  }
+  }
+};
+  export default Fetch;
+// export default async function Page() {
+    
+//     return(
+//         <div></div>
+//     )
+
+// }
+// SELECT 
+// c.corse_id,
+// c.name,
+// c.url,
+//        (SELECT COUNT(*) FROM research r WHERE c.corse_id = r.research_idcf) as Total_comments, 
+//        (SELECT COUNT(*) FROM quiz q WHERE c.corse_id = q.quiz_idcf) as Total_likes,
+//        u.Name
+// FROM corse c LEFT JOIN
+//      sheet s
+//      ON s.sheet_idcf = c.corse_id ;
+
+// select c.corse_id, count(r.research_idcf) as reserch_count from corse c left join research r on c.corse_id = r.research_idcf group by c.corse_id;
+
+// select 
+// c.corse_id,
+// c.name,
+// c.url, 
+// count(r.research_idcf) as count_r,
+// count(q.quiz_idcf) as count_q, 
+//   from corse c 
+//     left join research r on c.corse_id = r.research_idcf 
+//     left join quiz q     on c.corse_id = q.quiz_idcf 
+//     group by c.corse_id;
+
+// select 
+// c.corse_id,
+// c.name,
+// c.url, 
+// count(r.research_idcf) as count_r,
+// count(q.quiz_idcf) as count_q, 
+// count(s.sheet_idcf) as count_s,
+// count(e.exam_idcf) as count_e 
+
+//   from corse c 
+//     left join research r on c.corse_id = r.research_idcf 
+//     left join quiz q     on c.corse_id = q.quiz_idcf 
+//     left join sheet s    on c.corse_id = s.sheet_idcf 
+//     left join exam e     on c.corse_id = e.exam_idcf 
+//     group by c.corse_id;
+// select 
+// c.corse_id,
+// c.name,
+// c.url, 
+// count(r.research_idcf) as count_r,
+// count(q.quiz_idcf) as count_q, 
+//   from corse c 
+//     left join research r on c.corse_id = r.research_idcf 
+//     left join quiz q     on c.corse_id = q.quiz_idcf 
+//     group by c.corse_id;
+
+// SELECT
+//     c.corse_id,
+//     c.name,
+//     c.url, 
+//     average_rating,
+//     total_ratings,
+//     total_bookmarks
+// FROM
+//     corse c
+//     INNER
+//       JOIN
+//       (
+//         SELECT
+//             
+//             COUNT(*) AS total_ratings
+//         FROM
+//             research
+//         GROUP
+//             research_id
+//       ) AS ratings_summary
+//         ON ratings_summary.research_id = research.research_id
+//     LEFT
+//       JOIN
+//       (
+//         SELECT
+//             
+//             COUNT(*) AS total_bookmarks
+//         FROM
+//             quiz
+//         GROUP BY
+//             quiz_id
+//       ) AS bookmarks_summary
+//         ON bookmarks_summary.quiz_id = quiz.id
+// ORDER BY
+//     total_ratings DESC;
+
+// SELECT
+//     songs.name,
+//     average_rating,
+//     total_ratings,
+//     total_bookmarks
+// FROM
+//     songs
+//     INNER
+//       JOIN
+//       (
+//         SELECT
+//             song_id,
+//             AVG(rating) AS average_rating,
+//             COUNT(*) AS total_ratings
+//         FROM
+//             ratings
+//         GROUP
+//             song_id
+//       ) AS ratings_summary
+//         ON ratings_summary.song_id = songs.song_id
+//     LEFT
+//       JOIN
+//       (
+//         SELECT
+//             song_id,
+//             COUNT(*) AS total_bookmarks
+//         FROM
+//             bookmarks
+//         GROUP BY
+//             song_id
+//       ) AS bookmarks_summary
+//         ON bookmarks_summary.song_id = songs.id
+// ORDER BY
+//     total_ratings DESC;
+
+
+// SELECT p.ID,
+//        (SELECT COUNT(*) FROM Comments c WHERE c.Post_Id = p.ID) as Total_comments, 
+//        (SELECT COUNT(*) FROM Likes l WHERE l..Post_id = p.ID) as Total_likes,
+//        u.Name
+// FROM Posts p INNER JOIN
+//      Users u
+//      ON u.ID = p.User_id ;
+// SELECT  c.corse_id, c.name, c.url,(SELECT COUNT(*) FROM research r WHERE c.corse_id = r.research_idcf) as count_r,(SELECT COUNT(*) FROM quiz q WHERE c.corse_id = q.quiz_idcf) as count_q,(SELECT COUNT(*) FROM sheet s WHERE c.corse_id = s.sheet_idcf) as count_s,(SELECT COUNT(*) FROM exam e WHERE c.corse_id = e.exam_idcf) as count_e FROM corse c;
+
+// select r.*,  group_concat(DISTINCT  sr.status_research_status ORDER BY  sr.status_research_status DESC SEPARATOR ', ')
+//  sr.status_research_status
+// from research r
+// inner join status_research sr on r.research_id = sr.status_research_idrf
+// inner join users u on sr.status_research_iduf = u.user_id
+// group by r.research_id
+
+// select p.*, group_concat(DISTINCT c.title ORDER BY c.title DESC SEPARATOR ', ')
+// from Posts p
+// inner join PostCategories pc on p.ID = pc.ID_Post
+// inner join Categories c on pc.ID_Category = c.ID
+// group by p.id, p.title, p.content
+
+
+// select r.*,  sr.status_research_status 
+// from research r inner join status_research sr on r.research_id = sr.status_research_idrf 
+// inner join users u on sr.status_research_iduf = u.user_id group by r.research_id;
+// select r.*,  group_concat(DISTINCT  sr.status_research_status) from research r 
+// LEFT join status_research sr on r.research_id = sr.status_research_idrf 
+// LEFT join users u on sr.status_research_iduf = u.user_id group by r.research_id;
+
+// select r.*
+// from research r,
+//  users u,
+//   status_research sr where sr.status_research_id in ( select sr.status_research_status 
+// from status_research s where s.status_research_idrf=r.research_id and s.status_research_iduf=u.user_id );
+
+// select r.*
+// from research r,
+//  users u,
+//  status_research sr where sr.status_research_idrf=r.research_id and sr.status_research_iduf=u.user_id;
+//  =  in ( select sr.status_research_status 
+// from status_research s where s.status_research_idrf=r.research_id and s.status_research_iduf=u.user_id );
+
+// select e.*,c.* 
+// from Posts e,
+//  Categories c,
+//  PostCategories cp where cp.id in ( select s.id from PostCategories s where s.empid=e.id and s.companyid=c.id );
+
+// select r.*,  group_concat(DISTINCT  sr.status_research_status) as status
+// from research r 
+// LEFT join status_research sr on r.research_id = sr.status_research_idrf 
+// LEFT join users u on sr.status_research_iduf = u.user_id where r.research_idcf=1 and u.user_id=1 group by r.research_id;

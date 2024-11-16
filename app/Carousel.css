@@ -1,0 +1,49 @@
+/* .App{
+    /* margin-top: 80px; 
+    background: linear-gradient(45deg, #013237, #08272b, #0a1c1f, #061213, #000000)
+} */
+
+h1{
+    text-align:center;
+    color: rgb(153, 131, 131);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+.item{
+    background: rgb(153, 131, 131);
+    height: 150px;
+    width: 150px;
+    text-align:center;
+    align-items: center;
+    border-radius: 50%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.item:hover img{
+    transform: scale(0.8);
+    cursor: pointer;
+}
+.alice-carousel{
+    height: 95vh;
+}
+ .alice-carousel__wrapper {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+ }
+ .alice-carousel__dots, .alice-carousel__prev-btn, .alice-carousel__next-btn{
+    /* margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin-top:35vh; */
+    display: none;
+ }
+.alice-carousel__dots-item:not(.__custom):hover, .alice-carousel__dots-item:not(.__custom).__active{
+    background-color: rgb(153, 131, 131) !important;
+}
